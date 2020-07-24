@@ -22,7 +22,7 @@ app.use(bodyParser.json({limit: '20mb'}));
 app.use(cors({origin: 'http://localhost:3000'}));
 app.use(passport.initialize());
 
-app.listen(process.env.PORT, () => console.log(`Server started at port : ${process.env.PORT}`));
+app.listen(process.env.PORT || 3000, () => console.log(`Server started at port : ${process.env.PORT}`));
 
 
 app.use('/auth', userController);
