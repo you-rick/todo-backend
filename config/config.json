@@ -6,7 +6,6 @@
         "JWT_EXP": "72h"
     },
     "production": {
-        "PORT": 3000,
         "JWT_SECRET": "SECRET#123",
         "JWT_EXP": "72h"
     }
