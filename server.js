@@ -22,7 +22,6 @@ app.use(bodyParser.json({limit: '20mb'}));
 app.use(cors({origin: 'http://localhost:3000'}));
 app.use(passport.initialize());
 
-app.listen(process.env.PORT || 3000, () => console.log(`Server started at port : ${process.env.PORT}`));
 
 
 app.use('/auth', userController);
@@ -36,6 +35,9 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
     })
 }
+
+app.listen(process.env.PORT || 3000, () => console.log(`Server started at port : ${process.env.PORT}`));
+
 
 // base error handler
 app.use((err, req, res, next) => {
