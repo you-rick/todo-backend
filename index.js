@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
+const path = require('path');
 
 const {config} = require('./config/config');
 const {mongoose} = require('./db');
@@ -27,6 +28,14 @@ app.listen(process.env.PORT, () => console.log(`Server started at port : ${proce
 app.use('/auth', userController);
 app.use('/todos', todoController);
 
+// Production Deploy
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    })
+}
 
 // base error handler
 app.use((err, req, res, next) => {
