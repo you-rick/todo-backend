@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -9,7 +10,8 @@ let userSchema = new mongoose.Schema({
     },
     username: {
         type: String,
-        required: 'Username can not be empty'
+        required: 'Username can not be empty',
+        unique: true
     },
     password: {
         type: String,
@@ -45,7 +47,7 @@ userSchema.methods.generateJwt = (userId) => {
         });
 };
 
-
+userSchema.plugin(uniqueValidator);
 let User = mongoose.model('User', userSchema);
 
 module.exports = {

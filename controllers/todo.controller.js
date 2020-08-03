@@ -8,7 +8,7 @@ const {Todo} = require('../models/todo.model');
 router.get('/', jwtHelper.verifyJwtToken, (req, response) => {
     Todo.find({author: req._id}, (err, docs) => {
         if (!err) {
-            response.send(docs);
+            response.send({status: true, data: docs});
         } else {
             console.log("Error in Retrieving Categories :" + JSON.stringify(err, undefined, 2));
             return response.status(400).json(err);
@@ -26,7 +26,7 @@ router.post('/', jwtHelper.verifyJwtToken, (req, response) => {
 
     todo.save((err, docs) => {
         if (!err) {
-            response.send({status: true, message: "Todo successfully added", todo: docs});
+            response.send({status: true, message: "Todo successfully added", data: docs});
         } else {
             console.log("Error in Categories POST :" + JSON.stringify(err, undefined, 2));
             return response.status(400).json(err);
@@ -51,7 +51,7 @@ router.put('/:id', jwtHelper.verifyJwtToken, (req, response) => {  // /:id <- э
         {$set: todo},
         (err, docs) => {
             if (!err) {
-                 response.send({status: true, message: "Todo successfully updated", todo: docs});
+                 response.send({status: true, message: "Todo successfully updated", data: docs});
             } else {
                 console.log("Damn it! Error in Categories PUT :" + JSON.stringify(err, undefined, 2));
                 return response.status(400).json(err);
@@ -67,7 +67,7 @@ router.delete('/:id', jwtHelper.verifyJwtToken, (req, response) => {
 
     Todo.deleteOne({_id: req.params.id, author: req._id}, (err, docs) => {
         if (!err) {
-            response.send({status: true, message: "Todo successfully deleted", todo: docs});
+            response.send({status: true, message: "Todo successfully deleted", data: docs});
         } else {
             console.log("Damn it! Error in Categories DELETE :" + JSON.stringify(err, undefined, 2));
             return response.status(400).json(err);

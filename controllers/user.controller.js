@@ -22,8 +22,8 @@ router.post('/register', (req, res, next) => {
         if (!err)
             return res.status(200).json({status: true, message: "successful registration"});
         else {
-            if (err.code === 11000) {
-                res.status(422).send(['Duplicate email adrress found.']);
+            if (err.code === 11000 || err.errors.username.kind === 'unique') {
+                res.status(422).send({message: 'Duplicate username found.'});
             } else {
                 return res.status(400).json(err);
             }
@@ -40,7 +40,6 @@ router.post('/login', (req, res, next) => {
         } else if (user) {
             return res.status(200).json({status: true, 'token': user.generateJwt(user._id)});
         }
-        // unknown user or wrong password
         else {
             return res.status(404).json(info);
         }
@@ -53,8 +52,6 @@ router.get('/profile', jwtHelper.verifyJwtToken, (req, res, next) => {
         if (!user) {
             return res.status(404).json({status: false, message: 'User record not found'});
         } else {
-            // Чтоб не отдавать все данные о пользователе, то есть пароль и салт, используем
-            // Lodash как фильтр
             return res.status(200).json({
                 status: true,
                 user: _.pick(user, ['_id', 'name', 'username', 'address', 'birthday', 'phone'])
