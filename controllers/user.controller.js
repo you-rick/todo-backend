@@ -38,12 +38,19 @@ router.post('/login', (req, res, next) => {
         if (err) {
             return res.status(400).json(err);
         } else if (user) {
-            return res.status(200).json({status: true, 'token': user.generateJwt(user._id)});
+            res.cookie('token', user.generateJwt(user._id), {httpOnly: false});
+            res.status(200).json({status: true, 'token': user.generateJwt(user._id)});
         }
         else {
             return res.status(404).json(info);
         }
     })(req, res, next);
+});
+
+
+router.post('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({status: true});
 });
 
 
